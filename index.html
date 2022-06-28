@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body {
+            height: 200vh;
+            width: 100vw;
+        }
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <video id="video">
+        <source src="video.mp4" type="video/mp4">
+    </video>
+    <script>
+        var media = document.getElementById("video");
+        function go(factor) {
+            media.currentTime += factor/29.97
+        }
+
+        var keys = {37: 1, 38: 1, 39: 1, 40: 1};
+        var lastScrollTop = 0;
+
+        function preventDefault(e) {
+            var st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop){
+                go(4)
+            } else {
+                go(-4)
+            }
+            lastScrollTop = st <= 0 ? 0 : st;
+            e.preventDefault();
+        }
+
+        window.addEventListener('wheel', (event) => {
+            checkScrollDirection(event);
+            event.preventDefault();
+        }, { passive: false });
+
+        function checkScrollDirection(event) {
+            if (checkScrollDirectionIsUp(event)) {
+                go(-2);
+            } else {
+                go(2);
+            }
+        }
+
+        function checkScrollDirectionIsUp(event) {
+            if (event.wheelDelta) {
+                return event.wheelDelta > 0;
+            }
+            return event.deltaY < 0;
+        }
+    </script>
+</body>
+</html>
